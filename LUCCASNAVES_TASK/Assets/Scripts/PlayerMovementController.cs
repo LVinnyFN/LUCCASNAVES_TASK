@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
+public class PlayerMovementController : MonoBehaviour, PlayerInputs.IPlayerActions
 {
     public PlayerInputs inputs;
     public Camera playerCamera;
@@ -12,29 +12,36 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     public float movementSpeed = 1.0f;
     public float jumpSpeed = 1.0f;
     public float lookSpeed = 1.0f;
+    public float gravity = 9.8f;
+    public Vector2 lookVerticalAngle = new Vector2(30, 60);
+    public LayerMask groundLayer;
 
     [Header("Inputs")]
-    public float gravity = 9.8f;
     public bool jump;
     public Vector2 normalizedMovementInput;
     public Vector2 movementInput;
     public Vector2 lookInput;
-    public Vector2 lookVerticalAngle = new Vector2(30, 60);
 
-    public LayerMask groundLayer;
-
-    public Vector3 movement;
-    public Vector3 playerVelocity;
+    private Vector3 movement;
+    private Vector3 playerVelocity;
     private Vector2 playerRotation;
     private Vector2 cameraRotation;
 
-    private void Awake()
-    {
-    }
-
     private void Update()
     {
-        //MOVEMENT
+        movement = Vector2.zero;
+
+        HandleHorizontalMovement();
+        HandleVerticalMovement();
+        UpdateMovement();
+
+        UpdateRotation();
+
+        UpdateAnimation(movementInput);
+    }
+
+    private void HandleHorizontalMovement()
+    {
         Vector3 cameraForward = playerCamera.transform.forward;
         cameraForward.y = 0.0f;
         Vector3 cameraRight = playerCamera.transform.right;
@@ -42,10 +49,10 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
 
         movement = cameraForward * normalizedMovementInput.y + cameraRight * normalizedMovementInput.x;
         movement *= movementSpeed * Time.deltaTime;
-
-        // JUMP
-        bool isGrounded = IsGrounded();       
-        if (isGrounded)
+    }
+    private void HandleVerticalMovement()
+    {
+        if (IsGrounded())
         {
             playerVelocity.y = Mathf.Max(playerVelocity.y, 0.0f);
             if (jump)
@@ -58,11 +65,14 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
         {
             playerVelocity.y -= gravity * Time.deltaTime;
         }
-
         movement += playerVelocity;
+    }
+    private void UpdateMovement()
+    {
         characterController.Move(movement);
-
-        //ROTATION
+    }
+    private void UpdateRotation()
+    {
         cameraRotation.x += lookInput.x * lookSpeed;
         cameraRotation.y += -lookInput.y * lookSpeed;
         cameraRotation.y = Mathf.Clamp(cameraRotation.y, lookVerticalAngle.x, lookVerticalAngle.y);
@@ -71,12 +81,12 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
         transform.rotation = Quaternion.Euler(0.0f, playerRotation.x, 0.0f);
 
         playerCamera.transform.rotation = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0.0f);
-
-        //ANIMATION
-        Vector2 animationDirection = movementInput;
-        if (animationDirection.y < 0.0f) animationDirection.x = 0.0f;
-        Debug.Log(animationDirection);
-        animationController.UpdateDirectionAnimation(animationDirection);
+    }    
+    private void UpdateAnimation(Vector2 direction)
+    {
+        if (direction.y < 0.0f) direction.x = 0.0f;
+        Debug.Log(direction);
+        animationController.UpdateDirectionAnimation(direction);
     }
 
     private void OnEnable()
@@ -92,8 +102,17 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
         inputs.Player.RemoveCallbacks(this);
     }
 
-    #region INPUTS
+    /// <summary>
+    /// Checks if the player is in contact with the ground
+    /// </summary>
+    private bool IsGrounded()
+    {
+        Vector3 groundDetectorPosition = transform.position;
+        groundDetectorPosition.y += 0.15f;
+        return Physics.CheckSphere(groundDetectorPosition, 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
+    }
 
+    #region INPUTS
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
@@ -119,10 +138,4 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     }
     #endregion
 
-    private bool IsGrounded()
-    {
-        Vector3 groundDetectorPosition = transform.position;
-        groundDetectorPosition.y += 0.15f;
-        return Physics.CheckSphere(groundDetectorPosition, 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
-    }
 }
