@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     public PlayerInputs inputs;
     public Camera playerCamera;
     public CharacterController characterController;
+    public PlayerAnimationController animationController;
 
     [Header("Settings")]
     public float movementSpeed = 1.0f;
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     [Header("Inputs")]
     public float gravity = 9.8f;
     public bool jump;
+    public Vector2 normalizedMovementInput;
     public Vector2 movementInput;
     public Vector2 lookInput;
     public Vector2 lookVerticalAngle = new Vector2(30, 60);
@@ -38,7 +40,7 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
         Vector3 cameraRight = playerCamera.transform.right;
         cameraRight.y = 0.0f;
 
-        movement = cameraForward * movementInput.y + cameraRight * movementInput.x;
+        movement = cameraForward * normalizedMovementInput.y + cameraRight * normalizedMovementInput.x;
         movement *= movementSpeed * Time.deltaTime;
 
         // JUMP
@@ -69,6 +71,12 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
         transform.rotation = Quaternion.Euler(0.0f, playerRotation.x, 0.0f);
 
         playerCamera.transform.rotation = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0.0f);
+
+        //ANIMATION
+        Vector2 animationDirection = movementInput;
+        if (animationDirection.y < 0.0f) animationDirection.x = 0.0f;
+        Debug.Log(animationDirection);
+        animationController.UpdateDirectionAnimation(animationDirection);
     }
 
     private void OnEnable()
@@ -89,6 +97,7 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        normalizedMovementInput = movementInput.normalized;
     }
     public void OnLook(InputAction.CallbackContext context)
     {
