@@ -19,4 +19,5 @@ MonoBehaviour:
     maxStack: -1
     inventoryIcon: {fileID: 0}
     inventoryIconColor: {r: 0.990566, g: 0.7039171, b: 0.4625756, a: 1}
-    prefab: {fileID: 0}
+    worldItemPrefab: {fileID: 2701601035184478457, guid: bd3119a4534279e45a3ffcb9c3c44a45, type: 3}
+    inventoryItemPrefab: {fileID: 1327472873259177373, guid: 357b45207317f5b449e01ea5584706ce, type: 3}

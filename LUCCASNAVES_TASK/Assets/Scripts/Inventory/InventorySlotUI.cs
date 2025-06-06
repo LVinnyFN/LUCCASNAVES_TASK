@@ -7,35 +7,41 @@ using UnityEngine.UI;
 public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI countText;
-    public Image iconImage;
+
+    [Header("Transforms")]
+    public RectTransform inventoryItemParent;
+    public RectTransform inventoryItemIconParent;
+    public InventoryItem inventoryItem;
 
     public int index;
     public bool isDragging;
     private bool canDrag;
 
-    public Action<Image> onBeginDrag;
-    public Action<Image> onStopDrag;
+    public Action<RectTransform> onBeginDrag;
+    public Action<RectTransform> onStopDrag;
     public Action<InventorySlotUI, InventorySlotUI> onDrop;
     public Action<InventorySlotUI> onHover;
     public Action<InventorySlotUI> onUnhover;
 
     public void SetEmpty()
     {
-        SetIcon(null);
-        SetColor(Color.white);
-        SetCount(-1);
+        if(inventoryItem) Destroy(inventoryItem.gameObject);
+        inventoryItem = null;
         SetCanDrag(false);
+        SetCount(-1);
     }
-    public void SetItem(Sprite icon, Color iconColor, int count)
+    public void SetItem(InventoryItem item, Color iconColor, int count)
     {
-        SetIcon(icon);
+        SetEmpty();
+
+        inventoryItem = item;
+        ResetItemIconParent();
         SetColor(iconColor);
         SetCount(count);
         SetCanDrag(true);
     }
 
-    public void SetIcon(Sprite iconSprite) => iconImage.sprite = iconSprite;
-    public void SetColor(Color color) => iconImage.color = color;
+    private void SetColor(Color color) => inventoryItem.image.color = color;
     public void SetCount(int count)
     {
         if(count < 0) countText.gameObject.SetActive(false);
@@ -57,8 +63,8 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         if (isDragging)
         {
-            iconImage.rectTransform.anchoredPosition += eventData.delta;
-            onBeginDrag?.Invoke(iconImage);
+            inventoryItemParent.anchoredPosition += eventData.delta;
+            onBeginDrag?.Invoke(inventoryItemParent);            
         }
     }
     public void OnEndDrag(PointerEventData eventData)
@@ -66,9 +72,8 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         if (isDragging)
         {
             isDragging = false;
-            iconImage.transform.SetParent(transform);
-            iconImage.rectTransform.anchoredPosition = Vector2.zero;
-            onStopDrag?.Invoke(iconImage);
+            onStopDrag?.Invoke(inventoryItemParent); 
+            ResetItemIconParent();
         }
     }
 
@@ -89,5 +94,25 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     public void OnPointerExit(PointerEventData eventData)
     {
         onUnhover?.Invoke(this);
+    }
+
+    private void ResetItemIconParent()
+    {
+        inventoryItemParent.SetParent(transform);
+
+        inventoryItemParent.anchorMin = Vector2.zero;
+        inventoryItemParent.anchorMax = Vector2.one;
+        inventoryItemParent.anchoredPosition = Vector2.zero;
+        inventoryItemParent.sizeDelta = Vector2.zero;
+
+        if (inventoryItem)
+        {
+            inventoryItem.rectTransform.SetParent(inventoryItemIconParent);
+
+            inventoryItem.rectTransform.anchorMin = Vector2.zero;
+            inventoryItem.rectTransform.anchorMax = Vector2.one;
+            inventoryItem.rectTransform.anchoredPosition = Vector2.zero;
+            inventoryItem.rectTransform.sizeDelta = Vector2.zero;
+        }
     }
 }

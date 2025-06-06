@@ -93,7 +93,7 @@ public class InventoryUI : MonoBehaviour
     public void SetSlotItem(int slotIndex, ItemIdentifier inventoryItem, int count)
     {
         InventorySlotUI slot = currentSlots[slotIndex];
-        slot.SetItem(inventoryItem.inventoryIcon, inventoryItem.inventoryIconColor, count);
+        slot.SetItem(Instantiate(inventoryItem.inventoryItemPrefab), inventoryItem.inventoryIconColor, count);
     }
     public void SetSlotEmpty(int slotIndex)
     {
@@ -101,12 +101,12 @@ public class InventoryUI : MonoBehaviour
         slot.SetEmpty();
     }
 
-    private void OnItemBeginDrag(Image itemIcon)
+    private void OnItemBeginDrag(RectTransform itemIcon)
     {
         itemIcon.transform.SetParent(dragSpace);
         IsDragging = true;
     }
-    private void OnItemStopDrag(Image itemIcon)
+    private void OnItemStopDrag(RectTransform itemIcon)
     {
         IsDragging = false;
     }

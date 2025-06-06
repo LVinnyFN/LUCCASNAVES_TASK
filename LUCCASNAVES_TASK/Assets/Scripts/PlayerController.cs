@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 position = player.position;
 
-        WorldItem worldItem = Instantiate(identifier.prefab, position, Quaternion.identity);
+        WorldItem worldItem = Instantiate(identifier.worldItemPrefab, position, Quaternion.identity);
         worldItem.itemIdentifier = identifier;
         worldItem.amount = amount;
     }

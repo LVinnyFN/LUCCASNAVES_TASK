@@ -9,5 +9,7 @@ public class ItemIdentifier
     public int maxStack;
     public Sprite inventoryIcon;
     public Color inventoryIconColor = Color.white;
-    public WorldItem prefab;
+    [Header("Prefabs")]
+    public WorldItem worldItemPrefab;
+    public InventoryItem inventoryItemPrefab;
 }
