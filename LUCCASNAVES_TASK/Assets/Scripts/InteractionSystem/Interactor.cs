@@ -93,7 +93,10 @@ public class Interactor : MonoBehaviour, PlayerInputs.IPlayerActions
     }
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Interact();
+        if (context.performed)
+        {
+            Interact();
+        }
     }
     public void OnCrouch(InputAction.CallbackContext context)
     {
