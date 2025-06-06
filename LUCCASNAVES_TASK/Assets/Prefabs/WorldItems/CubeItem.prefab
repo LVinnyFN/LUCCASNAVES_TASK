@@ -134,12 +134,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIdentifierSO: {fileID: 11400000, guid: 5544e865e3dd3ed4c82c1ec15bd992c2, type: 2}
   itemIdentifier:
-    ID: Debug
-    maxStack: -1
+    ID: Cube
+    name: Cute Cube
+    description: It's a cube, but it's cute!
+    maxStack: 3
     inventoryIcon: {fileID: 0}
     inventoryIconColor: {r: 0.5529412, g: 1, b: 0.9732138, a: 1}
-    prefab: {fileID: 7908080645686526680, guid: 2de3eca59e53e11439710f399ccc4d53, type: 3}
-  amount: 0
+    worldItemPrefab: {fileID: 0}
+    inventoryItemPrefab: {fileID: 1327472873259177373, guid: 59f217ebb4770c646976e706042bb013, type: 3}
+  amount: 1
   rotationSpeed: 45
   upAndDownSpeed: 1
   upAndDownAmplitude: 0.2

@@ -16,8 +16,8 @@ MonoBehaviour:
     ID: Cube
     name: Cute Cube
     description: It's a cube, but it's cute!
-    maxStack: -1
-    inventoryIcon: {fileID: 0}
+    maxStack: 3
+    inventoryIcon: {fileID: 21300000, guid: cff5698a90292aa42b272cc64ee72435, type: 3}
     inventoryIconColor: {r: 0.5529412, g: 1, b: 0.9732138, a: 1}
     worldItemPrefab: {fileID: 7908080645686526680, guid: 2de3eca59e53e11439710f399ccc4d53, type: 3}
     inventoryItemPrefab: {fileID: 1327472873259177373, guid: 59f217ebb4770c646976e706042bb013, type: 3}

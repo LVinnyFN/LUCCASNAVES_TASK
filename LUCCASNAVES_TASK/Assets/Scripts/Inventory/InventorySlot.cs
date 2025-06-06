@@ -1,4 +1,6 @@
 
+using System;
+
 [System.Serializable]
 public struct InventorySlotArraySaveData
 {
@@ -103,5 +105,9 @@ public class InventorySlot
     public bool IsEmpty()
     {
         return currentItemCount == 0;
+    }
+    public string GetItemID()
+    {
+        return inventoryItem == null ? "" : inventoryItem.ID;
     }
 }

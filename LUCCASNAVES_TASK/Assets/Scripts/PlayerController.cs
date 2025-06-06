@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         if(interactable is WorldItem)
         {
             WorldItem worldItem = interactable as WorldItem;
-            if(playerInventory.TryAddItem(worldItem.itemIdentifier, 1))
+            if(playerInventory.TryAddItem(worldItem.itemIdentifier, worldItem.amount))
             {
                 Destroy(worldItem.gameObject);
             }

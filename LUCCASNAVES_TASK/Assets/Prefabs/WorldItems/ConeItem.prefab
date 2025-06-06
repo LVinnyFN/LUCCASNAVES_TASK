@@ -155,12 +155,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIdentifierSO: {fileID: 11400000, guid: 5726f4014af56d0419c5f48ea455bd30, type: 2}
   itemIdentifier:
-    ID: Debug
-    maxStack: -1
+    ID: Cone
+    name: Cone
+    description: Just a simple cone
+    maxStack: 1
     inventoryIcon: {fileID: 0}
     inventoryIconColor: {r: 0.990566, g: 0.7039171, b: 0.4625756, a: 1}
-    prefab: {fileID: 0}
-  amount: 0
+    worldItemPrefab: {fileID: 0}
+    inventoryItemPrefab: {fileID: 1327472873259177373, guid: 357b45207317f5b449e01ea5584706ce, type: 3}
+  amount: 1
   rotationSpeed: 45
   upAndDownSpeed: 1
   upAndDownAmplitude: 0.2

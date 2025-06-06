@@ -60,12 +60,32 @@ public class Inventory : MonoBehaviour
 
     public bool TryAddItem(ItemIdentifier item, int count)
     {
-        if (SearchForFirstEmptySlot(out InventorySlot slot))
+        int remaining = count;
+        while(remaining > 0)
         {
-            slot.SetItem(item, count);
-            inventoryUI.SetSlotItem(slot.index, slot.inventoryItem, slot.currentItemCount);
-            return true;
+            if (SearchForCompatibleSlot(item, out InventorySlot compatibleSlot))
+            {
+                compatibleSlot.AddItem(count, out remaining);
+                inventoryUI.SetSlotItem(compatibleSlot.index, compatibleSlot.inventoryItem, compatibleSlot.currentItemCount);
+
+                if(remaining == 0) return true;
+            }
+            else
+            {
+                break;
+            }
+        }      
+
+        if(remaining > 0)
+        {
+            if (SearchForFirstEmptySlot(out InventorySlot emptySlot))
+            {
+                emptySlot.SetItem(item, remaining);
+                inventoryUI.SetSlotItem(emptySlot.index, emptySlot.inventoryItem, emptySlot.currentItemCount);
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -80,6 +100,19 @@ public class Inventory : MonoBehaviour
             }
         }
         emptySlot = null;
+        return false;
+    }
+    public bool SearchForCompatibleSlot(ItemIdentifier item, out InventorySlot compatibleSlot)
+    {
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            if (slot.GetItemID() == item.ID && slot.currentItemCount < slot.maxItemCount)
+            {
+                compatibleSlot = slot;
+                return true;
+            }
+        }
+        compatibleSlot = null;
         return false;
     }
 

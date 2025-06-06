@@ -59,14 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8679245, g: 0.5128841, b: 0.20879315, a: 1}
+  m_Color: {r: 0.9921569, g: 0.7019608, b: 0.46274513, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f569bfdd6383457449a4fe9e1bd97c8c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -90,14 +90,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIdentifierSO: {fileID: 11400000, guid: 5726f4014af56d0419c5f48ea455bd30, type: 2}
   itemIdentifier:
-    ID: Debug
+    ID: Cone
     name: Cone
     description: Just a simple cone
-    maxStack: -1
-    inventoryIcon: {fileID: 0}
+    maxStack: 1
+    inventoryIcon: {fileID: 21300000, guid: f569bfdd6383457449a4fe9e1bd97c8c, type: 3}
     inventoryIconColor: {r: 0.990566, g: 0.7039171, b: 0.4625756, a: 1}
-    worldItemPrefab: {fileID: 0}
-    inventoryItemPrefab: {fileID: 0}
-  amount: 0
+    worldItemPrefab: {fileID: 2701601035184478457, guid: bd3119a4534279e45a3ffcb9c3c44a45, type: 3}
+    inventoryItemPrefab: {fileID: 1327472873259177373, guid: 357b45207317f5b449e01ea5584706ce, type: 3}
+  amount: 1
   rectTransform: {fileID: 8297938578145313846}
   image: {fileID: 3348720706128336752}
