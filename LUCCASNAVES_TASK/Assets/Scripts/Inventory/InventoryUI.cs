@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +14,16 @@ public class InventoryUI : MonoBehaviour
     public RectTransform dragSpace;
     public InventoryOutArea outArea;
 
-    private List<InventorySlotUI> currentSlots = new List<InventorySlotUI>();
+    [Header("Selected Item")]
+    public RectTransform tooltipPanel;
+    public TextMeshProUGUI tooltipName;
+    public TextMeshProUGUI tooltipDescription;
 
+    private List<InventorySlotUI> currentSlots = new List<InventorySlotUI>();
+    public bool IsDragging { get; private set; }
+
+    public Action<int> onHover;
+    public Action<int> onUnhover;
     public Action<int, int> onDrop;
     public Action<int> onDropOutside;
 
@@ -24,6 +34,8 @@ public class InventoryUI : MonoBehaviour
         slotPlaceholder = CreateInventorySlot();
 
         outArea.onDrop += OnDropOutside;
+
+        HideTooltip();
     }
 
     public void SetSlotsCount(int count)
@@ -56,12 +68,26 @@ public class InventoryUI : MonoBehaviour
             slot.index = i;
             slot.SetEmpty();
 
-            slot.onBeginDrag -= OnItemBeginDrag;
-            slot.onDrop -= OnDrop;
-
-            slot.onBeginDrag += OnItemBeginDrag;
-            slot.onDrop += OnDrop;
+            StopListeningToSlot(slot);
+            StartListeningToSlot(slot);
         }
+    }
+
+    private void StopListeningToSlot(InventorySlotUI slot)
+    {
+        slot.onBeginDrag -= OnItemBeginDrag;
+        slot.onStopDrag -= OnItemStopDrag;
+        slot.onDrop -= OnDrop;
+        slot.onHover -= OnHover;
+        slot.onUnhover -= OnUnhover;
+    }
+    private void StartListeningToSlot(InventorySlotUI slot)
+    {
+        slot.onBeginDrag += OnItemBeginDrag;
+        slot.onStopDrag += OnItemStopDrag;
+        slot.onDrop += OnDrop;
+        slot.onHover += OnHover;
+        slot.onUnhover += OnUnhover;
     }
 
     public void SetSlotItem(int slotIndex, ItemIdentifier inventoryItem, int count)
@@ -78,6 +104,11 @@ public class InventoryUI : MonoBehaviour
     private void OnItemBeginDrag(Image itemIcon)
     {
         itemIcon.transform.SetParent(dragSpace);
+        IsDragging = true;
+    }
+    private void OnItemStopDrag(Image itemIcon)
+    {
+        IsDragging = false;
     }
     private void OnDrop(InventorySlotUI A, InventorySlotUI B)
     {
@@ -87,10 +118,30 @@ public class InventoryUI : MonoBehaviour
     {
         onDropOutside?.Invoke(A.index);
     }
+    private void OnHover(InventorySlotUI slot)
+    {
+        onHover?.Invoke(slot.index);
+    }
+    private void OnUnhover(InventorySlotUI slot)
+    {
+        onUnhover?.Invoke(slot.index);
+    }    
 
     private InventorySlotUI CreateInventorySlot()
     {
         InventorySlotUI newSlot = Instantiate(slotTemplate, slotsContainer, false);
         return newSlot;
+    }
+
+    public void ShowTooltip(string name, string description)
+    {
+        tooltipPanel.gameObject.SetActive(true);
+        tooltipName.text = name;
+        tooltipDescription.text = description;
+    }
+
+    public void HideTooltip()
+    {
+        tooltipPanel.gameObject.SetActive(false);
     }
 }

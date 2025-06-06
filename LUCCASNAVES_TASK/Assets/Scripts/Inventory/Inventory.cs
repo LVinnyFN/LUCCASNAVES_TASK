@@ -17,6 +17,9 @@ public class Inventory : MonoBehaviour
     {
         SetInventorySize(defaultInventorySize);
         SetUIActive(false);
+
+        inventoryUI.onHover += OnHover;
+        inventoryUI.onUnhover += OnUnhover;
         inventoryUI.onDrop += OnDrop;
         inventoryUI.onDropOutside += OnDropOutside;
     }
@@ -65,7 +68,25 @@ public class Inventory : MonoBehaviour
         emptySlot = null;
         return false;
     }
-    
+
+    private void OnHover(int itemIndex)
+    {
+        InventorySlot slot = inventorySlots[itemIndex];
+        ItemIdentifier item = slot.inventoryItem;
+        
+        if(item == null || inventoryUI.IsDragging)
+        {
+            inventoryUI.HideTooltip();
+        }
+        else
+        {
+            inventoryUI.ShowTooltip(item.name, item.description);
+        }
+    }
+    private void OnUnhover(int itemIndex)
+    {
+        inventoryUI.HideTooltip();
+    }
     private void OnDrop(int aIndex, int bIndex)
     {
         InventorySlot A = inventorySlots[aIndex];

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public TextMeshProUGUI countText;
     public Image iconImage;
@@ -14,7 +14,10 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     private bool canDrag;
 
     public Action<Image> onBeginDrag;
+    public Action<Image> onStopDrag;
     public Action<InventorySlotUI, InventorySlotUI> onDrop;
+    public Action<InventorySlotUI> onHover;
+    public Action<InventorySlotUI> onUnhover;
 
     public void SetEmpty()
     {
@@ -65,6 +68,7 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             isDragging = false;
             iconImage.transform.SetParent(transform);
             iconImage.rectTransform.anchoredPosition = Vector2.zero;
+            onStopDrag?.Invoke(iconImage);
         }
     }
 
@@ -75,5 +79,15 @@ public class InventorySlotUI : MonoBehaviour, IBeginDragHandler, IDragHandler, I
             //Debug.Log("Drop " + slot.index + " on " + index);
             onDrop?.Invoke(slot, this);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        onHover?.Invoke(this);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        onUnhover?.Invoke(this);
     }
 }
