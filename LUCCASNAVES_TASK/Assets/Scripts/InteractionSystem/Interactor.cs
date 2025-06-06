@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class Interactor : MonoBehaviour, PlayerInputs.IPlayerActions
+public class Interactor : MonoBehaviour
 {
-    private PlayerInputs inputs;
     public float range = 2.0f;
     public float radius = 1.0f;
     public LayerMask mask;
@@ -62,7 +60,7 @@ public class Interactor : MonoBehaviour, PlayerInputs.IPlayerActions
         }
     }
 
-    private void Interact()
+    public void Interact()
     {
         if (currentHover != null)
         {
@@ -70,44 +68,6 @@ public class Interactor : MonoBehaviour, PlayerInputs.IPlayerActions
             onInteract?.Invoke(currentHover);
         }
     }
-
-    //TODO: Clean the input actions
-    #region INPUT
-    private void OnEnable()
-    {
-        inputs = new PlayerInputs();
-        inputs.Enable();
-        inputs.Player.Enable();
-        inputs.Player.SetCallbacks(this);
-    }
-    private void OnDisable()
-    {
-        inputs.Player.Disable();
-        inputs.Player.RemoveCallbacks(this);
-    }
-    public void OnMove(InputAction.CallbackContext context)
-    {
-    }
-    public void OnLook(InputAction.CallbackContext context)
-    {
-    }
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Interact();
-        }
-    }
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-    }
-    public void OnJump(InputAction.CallbackContext context)
-    {
-    }
-    public void OnSprint(InputAction.CallbackContext context)
-    {
-    }
-    #endregion
 }
 
 public interface IInteractable

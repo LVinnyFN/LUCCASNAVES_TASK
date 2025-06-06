@@ -4,6 +4,7 @@ public class PlayerAnimationController : MonoBehaviour
 {
     private static int xHash = Animator.StringToHash("x");
     private static int yHash = Animator.StringToHash("y");
+    private static int collectStateHash = Animator.StringToHash("UpperBody.Collect");
 
     public Animator animator;
     public float blendSpeed = 1.0f;
@@ -16,5 +17,10 @@ public class PlayerAnimationController : MonoBehaviour
 
         animator.SetFloat(xHash, currentDirection.x);
         animator.SetFloat(yHash, currentDirection.y);
+    }
+
+    public void PlayCollectAnimation()
+    {
+        animator.Play(collectStateHash, 1);
     }
 }

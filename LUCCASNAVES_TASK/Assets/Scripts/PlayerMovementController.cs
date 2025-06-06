@@ -1,9 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovementController : MonoBehaviour, PlayerInputs.IPlayerActions
+public class PlayerMovementController : MonoBehaviour
 {
-    public PlayerInputs inputs;
     public Camera playerCamera;
     public CharacterController characterController;
     public PlayerAnimationController animationController;
@@ -88,22 +88,7 @@ public class PlayerMovementController : MonoBehaviour, PlayerInputs.IPlayerActio
         animationController.UpdateDirectionAnimation(direction);
     }
 
-    private void OnEnable()
-    {
-        inputs = new PlayerInputs();
-        inputs.Enable();
-        inputs.Player.Enable();
-        inputs.Player.SetCallbacks(this);
-    }
-    private void OnDisable()
-    {
-        inputs.Player.Disable();
-        inputs.Player.RemoveCallbacks(this);
-    }
-
-    /// <summary>
-    /// Checks if the player is in contact with the ground
-    /// </summary>
+    
     private bool IsGrounded()
     {
         Vector3 groundDetectorPosition = transform.position;
@@ -111,30 +96,17 @@ public class PlayerMovementController : MonoBehaviour, PlayerInputs.IPlayerActio
         return Physics.CheckSphere(groundDetectorPosition, 0.5f, groundLayer, QueryTriggerInteraction.Ignore);
     }
 
-    #region INPUTS
-    public void OnMove(InputAction.CallbackContext context)
+    public void Move(Vector2 movementInput)
     {
-        movementInput = context.ReadValue<Vector2>();
-        normalizedMovementInput = movementInput.normalized;
+        this.movementInput = movementInput;
+        this.normalizedMovementInput = this.movementInput.normalized;
     }
-    public void OnLook(InputAction.CallbackContext context)
+    public void Look(Vector2 lookInput)
     {
-        lookInput = context.ReadValue<Vector2>();
+        this.lookInput = lookInput;
     }
-    public void OnSprint(InputAction.CallbackContext context)
+    public void Jump()
     {
-    }
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.performed == false) return;
         jump = true;
     }
-    public void OnCrouch(InputAction.CallbackContext context)
-    {
-    }
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-    }
-    #endregion
-
 }
