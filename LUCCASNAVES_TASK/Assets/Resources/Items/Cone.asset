@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Cone
   m_EditorClassIdentifier: 
   identifier:
-    ID: Debug
+    ID: Cone
     name: Cone
     description: Just a simple cone
     maxStack: -1

@@ -15,7 +15,6 @@ public class Inventory : MonoBehaviour
 
     private void Awake()
     {
-        SetInventorySize(defaultInventorySize);
         SetUIActive(false);
 
         inventoryUI.onHover += OnHover;
@@ -33,7 +32,7 @@ public class Inventory : MonoBehaviour
     public void SetInventorySize(int size)
     {
         inventorySize = size;
-        inventoryUI.SetSlotsCount(size);
+        inventoryUI.SetSlotsCount(inventorySize);
 
         inventorySlots.Clear();
         for(int i = 0; i < size; i++)
@@ -41,6 +40,21 @@ public class Inventory : MonoBehaviour
             InventorySlot slot = new InventorySlot();
             slot.index = i;
             inventorySlots.Add(slot);
+        }
+    }
+    public void SetInventorySize(InventorySlot[] slots)
+    {
+        inventorySize = slots.Length;
+        inventoryUI.SetSlotsCount(inventorySize);
+
+        inventorySlots.Clear();
+        for (int i = 0; i < inventorySize; i++)
+        {
+            InventorySlot slot = slots[i];
+            slot.index = i;
+            inventorySlots.Add(slot);
+            if (slot.inventoryItem == null) inventoryUI.SetSlotEmpty(slot.index);
+            else inventoryUI.SetSlotItem(slot.index, slot.inventoryItem, slot.currentItemCount);
         }
     }
 
@@ -133,6 +147,11 @@ public class Inventory : MonoBehaviour
         }
 
         onDropOutside?.Invoke(item, count);
+    }
+
+    public InventorySlot[] GetSlots()
+    {
+        return inventorySlots.ToArray();
     }
 
     public void AlternateUIActivation()

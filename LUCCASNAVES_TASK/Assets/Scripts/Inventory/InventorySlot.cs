@@ -1,3 +1,17 @@
+
+[System.Serializable]
+public struct InventorySlotArraySaveData
+{
+    public InventorySlotSaveData[] inventorySlots;
+}
+
+[System.Serializable]
+public struct InventorySlotSaveData
+{
+    public string itemID;
+    public int amount;
+}
+
 public class InventorySlot
 {
     public ItemIdentifier inventoryItem;
