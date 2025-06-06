@@ -85,7 +85,6 @@ public class PlayerMovementController : MonoBehaviour, PlayerInputs.IPlayerActio
     private void UpdateAnimation(Vector2 direction)
     {
         if (direction.y < 0.0f) direction.x = 0.0f;
-        Debug.Log(direction);
         animationController.UpdateDirectionAnimation(direction);
     }
 
