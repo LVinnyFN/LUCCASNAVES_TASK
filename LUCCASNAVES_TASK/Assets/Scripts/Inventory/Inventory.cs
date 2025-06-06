@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
     public InventoryUI inventoryUI;
+    public RectTransform inventoryTooltip;
     public int defaultInventorySize = 16;
     private int inventorySize;
 
@@ -194,5 +194,6 @@ public class Inventory : MonoBehaviour
     public void SetUIActive(bool active)
     {
         inventoryUI.gameObject.SetActive(active);
+        inventoryTooltip.gameObject.SetActive(!active);
     }
 }
