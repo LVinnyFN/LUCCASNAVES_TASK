@@ -23,7 +23,7 @@ public class PlayerMovementController : MonoBehaviour
     public Vector2 lookInput;
 
     private Vector3 movement;
-    private Vector3 playerVelocity;
+    public Vector3 playerVelocity;
     private Vector2 playerRotation;
     private Vector2 cameraRotation;
 
@@ -47,8 +47,7 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 cameraRight = playerCamera.transform.right;
         cameraRight.y = 0.0f;
 
-        movement = cameraForward * normalizedMovementInput.y + cameraRight * normalizedMovementInput.x;
-        movement *= movementSpeed * Time.deltaTime;
+        movement += (cameraForward * normalizedMovementInput.y + cameraRight * normalizedMovementInput.x) * movementSpeed * Time.deltaTime;
     }
     private void HandleVerticalMovement()
     {
@@ -65,7 +64,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             playerVelocity.y -= gravity * Time.deltaTime;
         }
-        movement += playerVelocity;
+        movement += playerVelocity * Time.deltaTime;
     }
     private void UpdateMovement()
     {

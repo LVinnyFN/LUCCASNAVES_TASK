@@ -139,8 +139,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.75, z: 0}
+  m_Size: {x: 0.6, y: 2, z: 0.6}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2701601035184478457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,9 +159,9 @@ MonoBehaviour:
     name: Cone
     description: Just a simple cone
     maxStack: 1
-    inventoryIcon: {fileID: 0}
+    inventoryIcon: {fileID: 21300000, guid: f569bfdd6383457449a4fe9e1bd97c8c, type: 3}
     inventoryIconColor: {r: 0.990566, g: 0.7039171, b: 0.4625756, a: 1}
-    worldItemPrefab: {fileID: 0}
+    worldItemPrefab: {fileID: 2701601035184478457, guid: bd3119a4534279e45a3ffcb9c3c44a45, type: 3}
     inventoryItemPrefab: {fileID: 1327472873259177373, guid: 357b45207317f5b449e01ea5584706ce, type: 3}
   amount: 1
   rotationSpeed: 45

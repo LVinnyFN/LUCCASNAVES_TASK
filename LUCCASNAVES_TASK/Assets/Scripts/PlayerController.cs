@@ -15,13 +15,23 @@ public class PlayerController : MonoBehaviour, PlayerInputs.IPlayerActions
     public PlayerMovementController movementController;
     public PlayerAnimationController animationController;
 
+    private Vector3 playerOriginalPosition;
+
     private void Awake()
     {
+        playerOriginalPosition = player.position;
+
         playerInteractor.onHover += OnHover;
         playerInteractor.onUnhover += OnUnhover;
         playerInteractor.onInteract += OnInteract;
 
         playerInventory.onDropOutside += OnDropItem;
+    }
+
+
+    private void Update()
+    {
+        if(player.transform.position.y < -5.0f) player.transform.position = playerOriginalPosition;
     }
 
     private void OnHover(IInteractable interactable)

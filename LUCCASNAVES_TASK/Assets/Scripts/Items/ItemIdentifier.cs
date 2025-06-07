@@ -10,6 +10,6 @@ public class ItemIdentifier
     public Sprite inventoryIcon;
     public Color inventoryIconColor = Color.white;
     [Header("Prefabs")]
-    public WorldItem worldItemPrefab;
-    public InventoryItem inventoryItemPrefab;
+    [SerializeField] public WorldItem worldItemPrefab;
+    [SerializeField] public InventoryItem inventoryItemPrefab;
 }

@@ -7,7 +7,9 @@ public class GameController : MonoBehaviour
 
     private void Awake()
     {
+#if UNITY_EDITOR
         if(deleteGame) DeleteGame();
+#endif
         LoadGame();
     }
 
